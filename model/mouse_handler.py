@@ -11,6 +11,7 @@ class MouseHandler:
 
         keyboard.on_press_key("r", self.__toggle_recording)
         keyboard.on_press_key("e", self.__record_mouse_position)
+        keyboard.on_press_key("w", self.__clear_recorded_mouse_positions)
         keyboard.on_press_key("a", self.__on_start_press)
         keyboard.on_press_key("s", self.__on_stop_press)
         keyboard.on_press_key("d", self.__on_reset_press)
@@ -35,9 +36,13 @@ class MouseHandler:
             for position in self.__recorded_positions:
                 moveTo(position)
                 click()
+    
+    def __clear_recorded_mouse_positions(self, event: keyboard.KeyboardEvent) -> None:
+        """Clear the recorded positions."""
+        self.__recorded_positions.clear()
 
     def __on_start_press(self, event: keyboard.KeyboardEvent) -> None:
-        """Starts the continuous mouse clicking in a separate thread."""
+        """Start the continuous mouse clicking in a separate thread."""
         if not self.__stop_event.is_set():
             print("Start key pressed. Beginning action...")
             # Ensure the event is cleared
@@ -46,11 +51,11 @@ class MouseHandler:
             action_thread.start()
 
     def __on_stop_press(self, event: keyboard.KeyboardEvent) -> None:
-        """Stops the continuous mouse clicking."""
+        """Stop the continuous mouse clicking."""
         print("Stop key pressed. Stopping action...")
         self.__stop_event.set() 
 
     def __on_reset_press(self, event: keyboard.KeyboardEvent) -> None:
-        """Resets the stop event."""
+        """Reset the stop event."""
         print("Reset key pressed. Reseting action...")
         self.__stop_event.clear()
