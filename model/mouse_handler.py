@@ -18,12 +18,12 @@ class MouseHandler:
 
         keyboard.wait("esc")
 
-    def __toggle_recording(self, event: keyboard.KeyboardEvent) -> None:
+    def __toggle_recording(self, _: keyboard.KeyboardEvent) -> None:
         """Toggles whether mouse clicks are being recorded."""
         print("Toggled recording.")
         self.__is_recording = not self.__is_recording
     
-    def __record_mouse_position(self, event:keyboard.KeyboardEvent) -> None:
+    def __record_mouse_position(self, _: keyboard.KeyboardEvent) -> None:
         """Adds current mouse position to recorded positions."""
         point_to_add: Point = position()
         print(f"Point to add: {point_to_add}")
@@ -37,11 +37,11 @@ class MouseHandler:
                 moveTo(position)
                 click()
     
-    def __clear_recorded_mouse_positions(self, event: keyboard.KeyboardEvent) -> None:
+    def __clear_recorded_mouse_positions(self, _: keyboard.KeyboardEvent) -> None:
         """Clear the recorded positions."""
         self.__recorded_positions.clear()
 
-    def __start_mouse_clicking(self, event: keyboard.KeyboardEvent) -> None:
+    def __start_mouse_clicking(self, _: keyboard.KeyboardEvent) -> None:
         """Start the continuous mouse clicking in a separate thread."""
         if not self.__stop_event.is_set():
             print("Start key pressed. Beginning action...")
@@ -50,12 +50,12 @@ class MouseHandler:
             action_thread = Thread(target=self.__click_recorded_mouse_positions)
             action_thread.start()
 
-    def __stop_mouse_clicking(self, event: keyboard.KeyboardEvent) -> None:
+    def __stop_mouse_clicking(self, _: keyboard.KeyboardEvent) -> None:
         """Stop the continuous mouse clicking."""
         print("Stop key pressed. Stopping action...")
         self.__stop_event.set() 
 
-    def __reset_stop_event(self, event: keyboard.KeyboardEvent) -> None:
+    def __reset_stop_event(self, _: keyboard.KeyboardEvent) -> None:
         """Reset the stop event."""
         print("Reset key pressed. Reseting action...")
         self.__stop_event.clear()
