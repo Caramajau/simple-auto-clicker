@@ -18,10 +18,12 @@ class MouseHandler:
         keyboard.wait("esc")
 
     def __toggle_recording(self, event: keyboard.KeyboardEvent) -> None:
+        """Toggles whether mouse clicks are being recorded."""
         print("Toggled recording.")
         self.__is_recording = not self.__is_recording
     
     def __record_mouse_position(self, event:keyboard.KeyboardEvent) -> None:
+        """Adds current mouse position to recorded positions."""
         point_to_add: Point = position()
         print(f"Point to add: {point_to_add}")
         self.__recorded_positions.append(point_to_add)
