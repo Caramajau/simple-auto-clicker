@@ -16,7 +16,7 @@ class EventSystem:
             cls.__listeners[event_type].remove(listener)
 
     @classmethod
-    def dispatch(cls, event_type: Events, *args, **kwargs) -> None:
+    def invoke_event(cls, event_type: Events, *args, **kwargs) -> None:
         if event_type in cls.__listeners:
             for listener in cls.__listeners[event_type]:
                 listener(*args, **kwargs)

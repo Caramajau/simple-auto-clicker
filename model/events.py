@@ -5,7 +5,6 @@ from enum import Enum, unique, auto
 class Events(Enum):
     TOGGLE_RECORDING = auto()
     RECORD_MOUSE_CLICK = auto()
-    CLICK_RECORDED_MOUSE_POSITIONS = auto()
     CLEAR_MOUSE_POSITIONS = auto()
     START_MOUSE_CLICKING = auto()
     STOP_MOUSE_CLICKING = auto()
