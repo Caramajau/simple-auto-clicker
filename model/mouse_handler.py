@@ -10,6 +10,7 @@ class MouseHandler:
 
         keyboard.on_press_key("r", self.__on_start_press)
         keyboard.on_press_key("s", self.__on_stop_press)
+        keyboard.on_press_key("c", self.__on_reset_press)
         keyboard.wait("esc")
 
     def __do_something(self) -> None:
@@ -32,3 +33,8 @@ class MouseHandler:
         """Stops the continuous action."""
         print("Stop key pressed. Stopping action...")
         self.__stop_event.set() 
+
+    def __on_reset_press(self, event: keyboard.KeyboardEvent) -> None:
+        """Resets the stop event."""
+        print("Reset key pressed. Reseting action...")
+        self.__stop_event.clear()
