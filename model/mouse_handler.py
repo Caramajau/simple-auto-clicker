@@ -34,9 +34,10 @@ class MouseHandler:
     
     def __record_mouse_position(self, _: keyboard.KeyboardEvent) -> None:
         """Adds current mouse position to recorded positions."""
-        point_to_add: Point = position()
-        self.__recorded_positions.append(point_to_add)
-        EventSystem.invoke_event(Events.RECORD_MOUSE_CLICK, point_to_add, self.__recorded_positions)
+        if self.__is_recording:
+            point_to_add: Point = position()
+            self.__recorded_positions.append(point_to_add)
+            EventSystem.invoke_event(Events.RECORD_MOUSE_CLICK, point_to_add, self.__recorded_positions)
 
     def __clear_recorded_mouse_positions(self, _: keyboard.KeyboardEvent) -> None:
         """Clear the recorded positions."""
