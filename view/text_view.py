@@ -1,6 +1,5 @@
 from model.event_system import EventSystem
 from model.events import Events
-from pyautogui import Point
 
 class TextView():
     def __init__(self) -> None:
@@ -32,14 +31,14 @@ class TextView():
     def __handle_toggle_recording(self) -> None:
         print("Toggled recording.")
 
-    def __handle_record_mouse_click(self, position_to_add: Point, all_positions: list[Point]) -> None:
+    def __handle_record_mouse_click(self, position_to_add: tuple[int, int], all_positions: list[tuple[int, int]]) -> None:
         print(f"Added position: {position_to_add}")
         print(f"All recorded positions are now: {all_positions}")
 
     def __handle_clear_mouse_positions(self) -> None:
         print("Mouse positions cleared.")
 
-    def __handle_start_mouse_clicking(self, all_positions: list[Point]) -> None:
+    def __handle_start_mouse_clicking(self, all_positions: list[tuple[int, int]]) -> None:
         print("Started clicking recorded positions:")
         for position in all_positions:
             print(position)

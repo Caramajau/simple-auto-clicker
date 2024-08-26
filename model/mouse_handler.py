@@ -1,4 +1,4 @@
-from pyautogui import moveTo, leftClick, position, Point
+from pydirectinput import moveTo, click, position
 import keyboard
 from threading import Thread, Event
 from model.event_system import EventSystem
@@ -7,15 +7,15 @@ from model.events import Events
 class MouseHandler:
     def __init__(self) -> None:
         self.__is_recording: bool = False
-        self.__recorded_positions: list[Point] = []
+        self.__recorded_positions: list[tuple[int, int]] = []
         self.__stop_event: Event = Event()
 
         self.__toggle_recording_key: str = "r"
         self.__record_mouse_position_key: str = "g"
-        self.__clear_recorded_positions_key: str = "v"
-        self.__start_key: str = "l"
-        self.__stop_key: str = "b"
-        self.__reset_key: str = "n"
+        self.__clear_recorded_positions_key: str = "c"
+        self.__start_key: str = "j"
+        self.__stop_key: str = "k"
+        self.__reset_key: str = "l"
 
         keyboard.on_press_key(self.__toggle_recording_key, self.__toggle_recording)
         keyboard.on_press_key(self.__record_mouse_position_key, self.__record_mouse_position)
@@ -39,7 +39,7 @@ class MouseHandler:
     def __record_mouse_position(self, _: keyboard.KeyboardEvent) -> None:
         """Adds current mouse position to recorded positions."""
         if self.__is_recording:
-            point_to_add: Point = position()
+            point_to_add: tuple[int, int] = position()
             self.__recorded_positions.append(point_to_add)
             EventSystem.invoke_event(Events.RECORD_MOUSE_CLICK, point_to_add, self.__recorded_positions)
 
@@ -52,8 +52,8 @@ class MouseHandler:
         """Click continuously recorded mouse positions until the stop event is set."""
         while not self.__stop_event.is_set():
             for position in self.__recorded_positions:
-                moveTo(position)
-                leftClick()
+                moveTo(position[0], position[1])
+                click()
 
     def __start_mouse_clicking(self, _: keyboard.KeyboardEvent) -> None:
         """Start the continuous mouse clicking in a separate thread."""
