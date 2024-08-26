@@ -4,12 +4,24 @@ from pyautogui import Point
 
 class TextView():
     def __init__(self) -> None:
+        EventSystem.add_listener(Events.PROGRAM_START, self.__handle_program_start)
         EventSystem.add_listener(Events.TOGGLE_RECORDING, self.__handle_toggle_recording)
         EventSystem.add_listener(Events.RECORD_MOUSE_CLICK, self.__handle_record_mouse_click)
         EventSystem.add_listener(Events.CLEAR_MOUSE_POSITIONS, self.__handle_clear_mouse_positions)
         EventSystem.add_listener(Events.START_MOUSE_CLICKING, self.__handle_start_mouse_clicking)
         EventSystem.add_listener(Events.STOP_MOUSE_CLICKING, self.__handle_stop_mouse_clicking)
         EventSystem.add_listener(Events.RESET_STOP_EVENT, self.__handle_reset_stop_event)
+
+    def __handle_program_start(self, toggle_recording_key: str, 
+                               record_mouse_click_key: str, clear_positions_key: str, 
+                               start_key: str, stop_key: str, reset_key: str) -> None:
+        print("The controls are:")
+        print(f"Toggle recording - {toggle_recording_key}")
+        print(f"Record mouse position - {record_mouse_click_key}")
+        print(f"Clear recorded positions - {clear_positions_key}")
+        print(f"Start clicking recorded positions - {start_key}")
+        print(f"Stop clicking recorded positions  - {stop_key}")
+        print(f"Reset clicking so that it start again - {reset_key}")
 
     def __handle_toggle_recording(self) -> None:
         print("Toggled recording.")

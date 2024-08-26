@@ -25,6 +25,10 @@ class MouseHandler:
         keyboard.on_press_key(self.__stop_key, self.__stop_mouse_clicking)
         keyboard.on_press_key(self.__reset_key, self.__reset_stop_event)
 
+        EventSystem.invoke_event(Events.PROGRAM_START, self.__toggle_recording_key, 
+                                 self.__record_mouse_position_key, self.__clear_recorded_positions_key,
+                                 self.__start_key, self.__stop_key, self.__reset_key)
+
         keyboard.wait("esc")
 
     def __toggle_recording(self, _: keyboard.KeyboardEvent) -> None:

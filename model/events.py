@@ -3,6 +3,7 @@ from enum import Enum, unique, auto
 # Events and not Event to not conflict with threading's Event.
 @unique
 class Events(Enum):
+    PROGRAM_START = auto()
     TOGGLE_RECORDING = auto()
     RECORD_MOUSE_CLICK = auto()
     CLEAR_MOUSE_POSITIONS = auto()
