@@ -1,4 +1,4 @@
-from pyautogui import moveTo, click, position, Point
+from pyautogui import moveTo, leftClick, position, Point
 import keyboard
 from threading import Thread, Event
 from model.event_system import EventSystem
@@ -11,11 +11,11 @@ class MouseHandler:
         self.__stop_event: Event = Event()
 
         self.__toggle_recording_key: str = "r"
-        self.__record_mouse_position_key: str = "e"
-        self.__clear_recorded_positions_key: str = "w"
-        self.__start_key: str = "a"
-        self.__stop_key: str = "s"
-        self.__reset_key: str = "d"
+        self.__record_mouse_position_key: str = "g"
+        self.__clear_recorded_positions_key: str = "v"
+        self.__start_key: str = "l"
+        self.__stop_key: str = "b"
+        self.__reset_key: str = "n"
 
         keyboard.on_press_key(self.__toggle_recording_key, self.__toggle_recording)
         keyboard.on_press_key(self.__record_mouse_position_key, self.__record_mouse_position)
@@ -53,7 +53,7 @@ class MouseHandler:
         while not self.__stop_event.is_set():
             for position in self.__recorded_positions:
                 moveTo(position)
-                click()
+                leftClick()
 
     def __start_mouse_clicking(self, _: keyboard.KeyboardEvent) -> None:
         """Start the continuous mouse clicking in a separate thread."""
