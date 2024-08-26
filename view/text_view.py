@@ -15,13 +15,19 @@ class TextView():
     def __handle_program_start(self, toggle_recording_key: str, 
                                record_mouse_click_key: str, clear_positions_key: str, 
                                start_key: str, stop_key: str, reset_key: str) -> None:
+        control_keys: dict[str, str] = {
+            "Toggle recording": toggle_recording_key,
+            "Record mouse position": record_mouse_click_key,
+            "Clear recorded positions": clear_positions_key,
+            "Start clicking recorded positions": start_key,
+            "Stop clicking recorded positions": stop_key,
+            "Reset clicking so that it starts again": reset_key
+        }
+        max_length: int = max(len(key) for key in control_keys)
+        
         print("The controls are:")
-        print(f"Toggle recording - {toggle_recording_key}")
-        print(f"Record mouse position - {record_mouse_click_key}")
-        print(f"Clear recorded positions - {clear_positions_key}")
-        print(f"Start clicking recorded positions - {start_key}")
-        print(f"Stop clicking recorded positions  - {stop_key}")
-        print(f"Reset clicking so that it start again - {reset_key}")
+        for info_text, key_name in control_keys.items():
+            print(f"{info_text.rjust(max_length)} - {key_name}")
 
     def __handle_toggle_recording(self) -> None:
         print("Toggled recording.")
