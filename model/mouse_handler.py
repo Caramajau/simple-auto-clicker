@@ -4,6 +4,7 @@ import keyboard
 from threading import Thread, Event
 from model.event_system import EventSystem
 from model.events import Events
+from time import sleep
 
 class MouseHandler:
     def __init__(self) -> None:
@@ -57,9 +58,10 @@ class MouseHandler:
                 self.__click()
 
     @staticmethod
-    def __click() -> None:
+    def __click(delay: float = 0.1) -> None:
         mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
         mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+        sleep(delay)
 
     def __start_mouse_clicking(self, _: keyboard.KeyboardEvent) -> None:
         """Start the continuous mouse clicking in a separate thread."""
