@@ -10,14 +10,19 @@ class MouseHandler:
         self.__recorded_positions: list[Point] = []
         self.__stop_event: Event = Event()
 
+        self.__toggle_recording_key: str = "r"
+        self.__record_mouse_position_key: str = "e"
+        self.__clear_recorded_positions_key: str = "w"
         self.__start_key: str = "a"
+        self.__stop_key: str = "s"
         self.__reset_key: str = "d"
 
-        keyboard.on_press_key("r", self.__toggle_recording)
-        keyboard.on_press_key("e", self.__record_mouse_position)
-        keyboard.on_press_key("w", self.__clear_recorded_mouse_positions)
+        keyboard.on_press_key(self.__toggle_recording_key, self.__toggle_recording)
+        keyboard.on_press_key(self.__record_mouse_position_key, self.__record_mouse_position)
+        keyboard.on_press_key(self.__clear_recorded_positions_key, 
+                              self.__clear_recorded_mouse_positions)
         keyboard.on_press_key(self.__start_key, self.__start_mouse_clicking)
-        keyboard.on_press_key("s", self.__stop_mouse_clicking)
+        keyboard.on_press_key(self.__stop_key, self.__stop_mouse_clicking)
         keyboard.on_press_key(self.__reset_key, self.__reset_stop_event)
 
         keyboard.wait("esc")
