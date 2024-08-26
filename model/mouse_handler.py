@@ -34,12 +34,12 @@ class MouseHandler:
         keyboard.wait("esc")
 
     def __toggle_recording(self, _: keyboard.KeyboardEvent) -> None:
-        """Toggles whether mouse clicks are being recorded."""
+        """Toggle whether mouse clicks are being recorded."""
         self.__is_recording = not self.__is_recording
         EventSystem.invoke_event(Events.TOGGLE_RECORDING)
     
     def __record_mouse_position(self, _: keyboard.KeyboardEvent) -> None:
-        """Adds current mouse position to recorded positions."""
+        """Add current mouse position to recorded positions."""
         if self.__is_recording:
             point_to_add: tuple[int, int] = GetCursorPos()
             self.__recorded_positions.append(point_to_add)
@@ -59,6 +59,7 @@ class MouseHandler:
 
     @staticmethod
     def __click(delay: float = 0.1) -> None:
+        """Click the screen where the mouse pointer is and then cause a delay"""
         mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
         mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
         sleep(delay)
