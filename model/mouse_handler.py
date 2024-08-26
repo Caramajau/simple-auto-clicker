@@ -1,4 +1,5 @@
-from pydirectinput import moveTo, click, position
+from win32api import GetCursorPos, SetCursorPos, mouse_event
+import win32con
 import keyboard
 from threading import Thread, Event
 from model.event_system import EventSystem
@@ -39,7 +40,7 @@ class MouseHandler:
     def __record_mouse_position(self, _: keyboard.KeyboardEvent) -> None:
         """Adds current mouse position to recorded positions."""
         if self.__is_recording:
-            point_to_add: tuple[int, int] = position()
+            point_to_add: tuple[int, int] = GetCursorPos()
             self.__recorded_positions.append(point_to_add)
             EventSystem.invoke_event(Events.RECORD_MOUSE_CLICK, point_to_add, self.__recorded_positions)
 
@@ -52,8 +53,13 @@ class MouseHandler:
         """Click continuously recorded mouse positions until the stop event is set."""
         while not self.__stop_event.is_set():
             for position in self.__recorded_positions:
-                moveTo(position[0], position[1])
-                click()
+                SetCursorPos(position)
+                self.__click()
+
+    @staticmethod
+    def __click() -> None:
+        mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
+        mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
     def __start_mouse_clicking(self, _: keyboard.KeyboardEvent) -> None:
         """Start the continuous mouse clicking in a separate thread."""
