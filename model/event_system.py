@@ -2,17 +2,17 @@ from typing import Callable
 from model.events import Events
 
 class EventSystem:
-    __listeners: dict[Events, list[Callable]] = {}
+    __listeners: dict[Events, list[Callable[..., None]]] = {}
     
     @classmethod
-    def add_listener(cls, event_type: Events, listener: Callable) -> None:
+    def add_listener(cls, event_type: Events, listener: Callable[..., None]) -> None:
         """Add a listener to an event according to event_type"""
         if event_type not in cls.__listeners:
             cls.__listeners[event_type] = []
         cls.__listeners[event_type].append(listener)
 
     @classmethod
-    def remove_listener(cls, event_type: Events, listener: Callable) -> None:
+    def remove_listener(cls, event_type: Events, listener: Callable[..., None]) -> None:
         """Remove a listener to an event according to event_type"""
         if event_type in cls.__listeners:
             cls.__listeners[event_type].remove(listener)
