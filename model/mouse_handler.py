@@ -13,6 +13,7 @@ class MouseHandler:
         self.__start_click_event: Event = Event()
         self.__clicking_event: Event = Event()
 
+        # TODO: make controls configurable
         self.__toggle_recording_key: str = "r"
         self.__record_mouse_position_key: str = "g"
         self.__clear_recorded_positions_key: str = "c"
@@ -57,6 +58,7 @@ class MouseHandler:
 
         self.__start_click_event.clear()
 
+    # TODO: make delay configurable
     @staticmethod
     def __click(delay: float = 0.1) -> None:
         """Click the screen where the mouse pointer is and then cause a delay"""
