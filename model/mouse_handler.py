@@ -10,7 +10,8 @@ class MouseHandler:
     def __init__(self) -> None:
         self.__is_recording: bool = False
         self.__recorded_positions: list[tuple[int, int]] = []
-        self.__stop_event: Event = Event()
+        self.__start_click_event: Event = Event()
+        self.__clicking_event: Event = Event()
 
         self.__toggle_recording_key: str = "r"
         self.__record_mouse_position_key: str = "g"
@@ -51,10 +52,12 @@ class MouseHandler:
 
     def __click_recorded_mouse_positions(self) -> None:
         """Click continuously recorded mouse positions until the stop event is set."""
-        while not self.__stop_event.is_set():
+        while not self.__clicking_event.is_set():
             for position in self.__recorded_positions:
                 SetCursorPos(position)
                 self.__click()
+
+        self.__start_click_event.clear()
 
     @staticmethod
     def __click(delay: float = 0.1) -> None:
@@ -65,19 +68,20 @@ class MouseHandler:
 
     def __start_mouse_clicking(self, _: KeyboardEvent) -> None:
         """Start the continuous mouse clicking in a separate thread."""
-        if not self.__stop_event.is_set():
-            # Ensure the event is cleared
-            self.__stop_event.clear()  
+        if not self.__start_click_event.is_set():
+            self.__start_click_event.set()
+             # Ensure the event is cleared
+            self.__clicking_event.clear()
             action_thread = Thread(target=self.__click_recorded_mouse_positions)
             action_thread.start()
             EventSystem.invoke_event(Events.START_MOUSE_CLICKING, self.__recorded_positions)
 
     def __stop_mouse_clicking(self, _: KeyboardEvent) -> None:
         """Stop the continuous mouse clicking."""
-        self.__stop_event.set() 
+        self.__clicking_event.set() 
         EventSystem.invoke_event(Events.STOP_MOUSE_CLICKING, self.__reset_key, self.__start_key)
 
     def __reset_stop_event(self, _: KeyboardEvent) -> None:
         """Reset the stop event."""
-        self.__stop_event.clear()
+        # self.__start_lock.clear()
         EventSystem.invoke_event(Events.RESET_STOP_EVENT)
