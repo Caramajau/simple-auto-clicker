@@ -18,7 +18,7 @@ class EventSystem:
             cls.__listeners[event_type].remove(listener)
 
     @classmethod
-    def invoke_event(cls, event_type: Events, *args, **kwargs) -> None:
+    def invoke_event(cls, event_type: Events, *args: object, **kwargs: object) -> None:
         """Call every listener added to event_type with given args and kwargs"""
         if event_type in cls.__listeners:
             for listener in cls.__listeners[event_type]:

@@ -1,4 +1,4 @@
-from win32api import GetCursorPos, SetCursorPos, mouse_event
+from win32api import GetCursorPos, SetCursorPos, mouse_event # type: ignore
 from win32con import MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP
 from keyboard import on_press_key, wait, KeyboardEvent
 from threading import Thread, Event
