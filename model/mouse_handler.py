@@ -18,18 +18,16 @@ class MouseHandler:
         self.__clear_recorded_positions_key: str = "c"
         self.__start_key: str = "j"
         self.__stop_key: str = "k"
-        self.__reset_key: str = "l"
 
         on_press_key(self.__toggle_recording_key, self.__toggle_recording)
         on_press_key(self.__record_mouse_position_key, self.__record_mouse_position)
         on_press_key(self.__clear_recorded_positions_key, self.__clear_recorded_mouse_positions)
         on_press_key(self.__start_key, self.__start_mouse_clicking)
         on_press_key(self.__stop_key, self.__stop_mouse_clicking)
-        on_press_key(self.__reset_key, self.__reset_stop_event)
 
         EventSystem.invoke_event(Events.PROGRAM_START, self.__toggle_recording_key, 
                                  self.__record_mouse_position_key, self.__clear_recorded_positions_key,
-                                 self.__start_key, self.__stop_key, self.__reset_key)
+                                 self.__start_key, self.__stop_key)
 
         wait("esc")
 
@@ -79,9 +77,4 @@ class MouseHandler:
     def __stop_mouse_clicking(self, _: KeyboardEvent) -> None:
         """Stop the continuous mouse clicking."""
         self.__clicking_event.set() 
-        EventSystem.invoke_event(Events.STOP_MOUSE_CLICKING, self.__reset_key, self.__start_key)
-
-    def __reset_stop_event(self, _: KeyboardEvent) -> None:
-        """Reset the stop event."""
-        # self.__start_lock.clear()
-        EventSystem.invoke_event(Events.RESET_STOP_EVENT)
+        EventSystem.invoke_event(Events.STOP_MOUSE_CLICKING, self.__start_key)

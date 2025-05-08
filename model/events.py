@@ -9,4 +9,3 @@ class Events(Enum):
     CLEAR_MOUSE_POSITIONS = auto()
     START_MOUSE_CLICKING = auto()
     STOP_MOUSE_CLICKING = auto()
-    RESET_STOP_EVENT = auto()

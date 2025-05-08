@@ -9,18 +9,16 @@ class TextView():
         EventSystem.add_listener(Events.CLEAR_MOUSE_POSITIONS, self.__handle_clear_mouse_positions)
         EventSystem.add_listener(Events.START_MOUSE_CLICKING, self.__handle_start_mouse_clicking)
         EventSystem.add_listener(Events.STOP_MOUSE_CLICKING, self.__handle_stop_mouse_clicking)
-        EventSystem.add_listener(Events.RESET_STOP_EVENT, self.__handle_reset_stop_event)
 
     def __handle_program_start(self, toggle_recording_key: str, 
                                record_mouse_click_key: str, clear_positions_key: str, 
-                               start_key: str, stop_key: str, reset_key: str) -> None:
+                               start_key: str, stop_key: str) -> None:
         control_keys: dict[str, str] = {
             "Toggle recording": toggle_recording_key,
             "Record mouse position": record_mouse_click_key,
             "Clear recorded positions": clear_positions_key,
             "Start clicking recorded positions": start_key,
-            "Stop clicking recorded positions": stop_key,
-            "Reset clicking so that it starts again": reset_key
+            "Stop clicking recorded positions": stop_key
         }
         max_length: int = max(len(key) for key in control_keys)
         
@@ -43,8 +41,5 @@ class TextView():
         for position in all_positions:
             print(position)
 
-    def __handle_stop_mouse_clicking(self, reset_key: str, start_key: str) -> None:
-        print(f"Stopped clicking recorded positions, press {reset_key} and then {start_key} to start the clicking again.")
-
-    def __handle_reset_stop_event(self) -> None:
-        print("Mouse clicking can now be started again.")
+    def __handle_stop_mouse_clicking(self, start_key: str) -> None:
+        print(f"Stopped clicking recorded positions, press {start_key} to start the clicking again.")
