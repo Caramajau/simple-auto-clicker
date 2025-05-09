@@ -1,10 +1,13 @@
-from win32api import GetCursorPos, SetCursorPos, mouse_event # type: ignore
+from win32api import GetCursorPos, SetCursorPos, mouse_event  # type: ignore
 from win32con import MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP
 from keyboard import on_press_key, wait, KeyboardEvent
 from threading import Thread, Event
 from model.event_system import EventSystem
 from model.events import Events
 from time import sleep
+
+from model.option_handler import OptionHandler
+
 
 class MouseHandler:
     def __init__(self) -> None:
@@ -13,22 +16,31 @@ class MouseHandler:
         self.__start_click_event: Event = Event()
         self.__clicking_event: Event = Event()
 
-        # TODO: make controls configurable
-        self.__toggle_recording_key: str = "r"
-        self.__record_mouse_position_key: str = "g"
-        self.__clear_recorded_positions_key: str = "c"
-        self.__start_key: str = "j"
-        self.__stop_key: str = "k"
+        self.__option_handler: OptionHandler = OptionHandler()
 
-        on_press_key(self.__toggle_recording_key, self.__toggle_recording)
-        on_press_key(self.__record_mouse_position_key, self.__record_mouse_position)
-        on_press_key(self.__clear_recorded_positions_key, self.__clear_recorded_mouse_positions)
-        on_press_key(self.__start_key, self.__start_mouse_clicking)
-        on_press_key(self.__stop_key, self.__stop_mouse_clicking)
+        on_press_key(
+            self.__option_handler.get_toggle_recording_key(),
+            self.__toggle_recording,
+        )
+        on_press_key(
+            self.__option_handler.get_record_mouse_position_key(),
+            self.__record_mouse_position,
+        )
+        on_press_key(
+            self.__option_handler.get_clear_recorded_positions_key(),
+            self.__clear_recorded_mouse_positions,
+        )
+        on_press_key(self.__option_handler.get_start_key(), self.__start_mouse_clicking)
+        on_press_key(self.__option_handler.get_stop_key(), self.__stop_mouse_clicking)
 
-        EventSystem.invoke_event(Events.PROGRAM_START, self.__toggle_recording_key, 
-                                 self.__record_mouse_position_key, self.__clear_recorded_positions_key,
-                                 self.__start_key, self.__stop_key)
+        EventSystem.invoke_event(
+            Events.PROGRAM_START,
+            self.__option_handler.get_toggle_recording_key(),
+            self.__option_handler.get_record_mouse_position_key(),
+            self.__option_handler.get_clear_recorded_positions_key(),
+            self.__option_handler.get_start_key(),
+            self.__option_handler.get_stop_key(),
+        )
 
         wait("esc")
 
@@ -36,13 +48,15 @@ class MouseHandler:
         """Toggle whether mouse clicks are being recorded."""
         self.__is_recording = not self.__is_recording
         EventSystem.invoke_event(Events.TOGGLE_RECORDING)
-    
+
     def __record_mouse_position(self, _: KeyboardEvent) -> None:
         """Add current mouse position to recorded positions."""
         if self.__is_recording:
             point_to_add: tuple[int, int] = GetCursorPos()
             self.__recorded_positions.append(point_to_add)
-            EventSystem.invoke_event(Events.RECORD_MOUSE_CLICK, point_to_add, self.__recorded_positions)
+            EventSystem.invoke_event(
+                Events.RECORD_MOUSE_CLICK, point_to_add, self.__recorded_positions
+            )
 
     def __clear_recorded_mouse_positions(self, _: KeyboardEvent) -> None:
         """Clear the recorded positions."""
@@ -70,13 +84,17 @@ class MouseHandler:
         """Start the continuous mouse clicking in a separate thread."""
         if not self.__start_click_event.is_set():
             self.__start_click_event.set()
-             # Ensure the event is cleared
+            # Ensure the event is cleared
             self.__clicking_event.clear()
             action_thread = Thread(target=self.__click_recorded_mouse_positions)
             action_thread.start()
-            EventSystem.invoke_event(Events.START_MOUSE_CLICKING, self.__recorded_positions)
+            EventSystem.invoke_event(
+                Events.START_MOUSE_CLICKING, self.__recorded_positions
+            )
 
     def __stop_mouse_clicking(self, _: KeyboardEvent) -> None:
         """Stop the continuous mouse clicking."""
-        self.__clicking_event.set() 
-        EventSystem.invoke_event(Events.STOP_MOUSE_CLICKING, self.__start_key)
+        self.__clicking_event.set()
+        EventSystem.invoke_event(
+            Events.STOP_MOUSE_CLICKING, self.__option_handler.get_start_key()
+        )

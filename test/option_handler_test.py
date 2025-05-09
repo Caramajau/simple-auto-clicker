@@ -51,5 +51,25 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_stop_key(), "e")
         self.assertEqual(option_handler.get_delay(), 0.5)
 
+    @patch("model.option_handler.JSONHandler")
+    def test_partial_options_fallback_to_default(self, mock_json_handler: MagicMock) -> None:
+        # Mock JSONHandler to return partial options
+        partial_options : dict[str, str | float] = {
+            "toggleRecording": "t",
+            "delay": 0.2
+        }
+        mock_json_handler = mock_json_handler.return_value
+        mock_json_handler.read_json.return_value = partial_options
+
+        option_handler = OptionHandler(self.__test_path)
+
+        # Assert partial options are loaded and missing ones fallback to defaults
+        self.assertEqual(option_handler.get_toggle_recording_key(), "t")
+        self.assertEqual(option_handler.get_record_mouse_position_key(), "g")  # Default
+        self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")  # Default
+        self.assertEqual(option_handler.get_start_key(), "j")  # Default
+        self.assertEqual(option_handler.get_stop_key(), "k")  # Default
+        self.assertEqual(option_handler.get_delay(), 0.2)
+
 if __name__ == "__main__":
     main()
