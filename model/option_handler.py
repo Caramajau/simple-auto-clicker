@@ -25,7 +25,7 @@ class OptionHandler:
         if len(self.__options) == 0:
             self.__options = OptionHandler.__DEFAULT_OPTIONS
             json_handler.write_json(OptionHandler.__DEFAULT_OPTIONS)
-            
+
     def get_toggle_recording_key(self) -> str:
         return str(self.__options[OptionHandler.__TOGGLE_RECORDING_KEY])
 
