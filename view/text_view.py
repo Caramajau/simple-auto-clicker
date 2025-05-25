@@ -27,8 +27,8 @@ class TextView():
         for info_text, key_name in control_keys.items():
             print(f"{info_text.rjust(max_length)} - {key_name}")
 
-    def __handle_toggle_recording(self) -> None:
-        print("Toggled recording.")
+    def __handle_toggle_recording(self, is_recording: bool) -> None:
+        print("Recording enabled." if is_recording else "Recording disabled.")
 
     def __handle_record_mouse_click(self, position_to_add: tuple[int, int], all_positions: list[tuple[int, int]]) -> None:
         print(f"Added position: {position_to_add}")
