@@ -15,9 +15,11 @@ class TestOptionHandler(TestCase):
             OptionHandler.STOP_KEY: OptionHandler.get_stop_key.__name__,
             OptionHandler.DELAY_KEY: OptionHandler.get_delay.__name__,
         }
-    
+
     @patch("model.option_handler.JSONHandler", autospec=True)
-    def test_default_options_loaded_when_file_is_empty(self, mock_json_handler: MagicMock) -> None:
+    def test_default_options_loaded_when_file_is_empty(
+        self, mock_json_handler: MagicMock
+    ) -> None:
         # Mock JSONHandler to return an empty dictionary
         mock_json_handler_instance: MagicMock = mock_json_handler.return_value
         mock_json_handler_instance.read_json.return_value = {}
@@ -34,10 +36,14 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_delay(), 0.1)
 
         # Assert that default options are written to the file
-        mock_json_handler_instance.write_json.assert_called_once_with(OptionHandler.get_default_options())
+        mock_json_handler_instance.write_json.assert_called_once_with(
+            OptionHandler.get_default_options()
+        )
 
     @patch("model.option_handler.JSONHandler")
-    def test_custom_options_loaded_from_file(self, mock_json_handler: MagicMock) -> None:
+    def test_custom_options_loaded_from_file(
+        self, mock_json_handler: MagicMock
+    ) -> None:
         # Mock JSONHandler to return custom options
         custom_options: Mapping[str, str | float] = {
             OptionHandler.TOGGLE_RECORDING_KEY: "t",
@@ -45,7 +51,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.CLEAR_RECORDED_POSITIONS_KEY: "x",
             OptionHandler.START_KEY: "s",
             OptionHandler.STOP_KEY: "e",
-            OptionHandler.DELAY_KEY: 0.5
+            OptionHandler.DELAY_KEY: 0.5,
         }
         mock_json_handler_instance: MagicMock = mock_json_handler.return_value
         mock_json_handler_instance.read_json.return_value = custom_options
@@ -61,30 +67,36 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_delay(), 0.5)
 
     @patch("model.option_handler.JSONHandler")
-    def test_partial_options_fallback_to_default(self, mock_json_handler: MagicMock) -> None:
+    def test_partial_options_fallback_to_default(
+        self, mock_json_handler: MagicMock
+    ) -> None:
         # Mock JSONHandler to return partial options
-        partial_options : Mapping[str, str | float] = {
+        partial_options: Mapping[str, str | float] = {
             OptionHandler.TOGGLE_RECORDING_KEY: "t",
-            OptionHandler.DELAY_KEY: 0.2
+            OptionHandler.DELAY_KEY: 0.2,
         }
         mock_json_handler = mock_json_handler.return_value
         mock_json_handler.read_json.return_value = partial_options
 
         option_handler = OptionHandler(self.__test_path)
 
-        # Assert partial options are loaded and missing ones fallback to defaults
+        # Assert changed options
         self.assertEqual(option_handler.get_toggle_recording_key(), "t")
-        self.assertEqual(option_handler.get_record_mouse_position_key(), "g")  # Default
-        self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")  # Default
-        self.assertEqual(option_handler.get_start_key(), "j")  # Default
-        self.assertEqual(option_handler.get_stop_key(), "k")  # Default
         self.assertEqual(option_handler.get_delay(), 0.2)
 
+        # Assert default options
+        self.assertEqual(option_handler.get_record_mouse_position_key(), "g")
+        self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")
+        self.assertEqual(option_handler.get_start_key(), "j")
+        self.assertEqual(option_handler.get_stop_key(), "k")
+
     @patch("model.option_handler.JSONHandler")
-    def test_single_option_override_fallback_to_default(self, mock_json_handler: MagicMock) -> None:
+    def test_single_option_override_fallback_to_default(
+        self, mock_json_handler: MagicMock
+    ) -> None:
         default_options: Mapping[str, str | float] = OptionHandler.get_default_options()
 
-        override_values: Mapping[str, str | float]  = {
+        override_values: Mapping[str, str | float] = {
             OptionHandler.TOGGLE_RECORDING_KEY: "z",
             OptionHandler.RECORD_MOUSE_POSITION_KEY: "m",
             OptionHandler.CLEAR_RECORDED_POSITIONS_KEY: "x",
@@ -102,17 +114,34 @@ class TestOptionHandler(TestCase):
 
                 option_handler = OptionHandler(self.__test_path)
 
-                # Check the overridden option
-                self.validate_option_override(self.__option_method_names, key, override_value, option_handler)
+                self.validate_option_override(
+                    self.__option_method_names, key, override_value, option_handler
+                )
 
-                # Check all other options are default
-                self.validate_default_options(default_options, self.__option_method_names, key, option_handler)
+                self.validate_default_options(
+                    default_options, self.__option_method_names, key, option_handler
+                )
 
-    def validate_option_override(self, option_method_names: Mapping[str, str], key: str, override_value: str | float, option_handler: OptionHandler) -> None:
+    def validate_option_override(
+        self,
+        option_method_names: Mapping[str, str],
+        key: str,
+        override_value: str | float,
+        option_handler: OptionHandler,
+    ) -> None:
         result = getattr(option_handler, option_method_names[key])()
-        self.assertEqual(result, override_value if key != OptionHandler.DELAY_KEY else float(override_value))
+        self.assertEqual(
+            result,
+            override_value if key != OptionHandler.DELAY_KEY else float(override_value),
+        )
 
-    def validate_default_options(self, default_options: Mapping[str, str | float], option_method_names: Mapping[str, str], key: str, option_handler: OptionHandler) -> None:
+    def validate_default_options(
+        self,
+        default_options: Mapping[str, str | float],
+        option_method_names: Mapping[str, str],
+        key: str,
+        option_handler: OptionHandler,
+    ) -> None:
         for other_key, method in option_method_names.items():
             if other_key == key:
                 continue
@@ -123,6 +152,7 @@ class TestOptionHandler(TestCase):
                 self.assertEqual(result, float(expected))
             else:
                 self.assertEqual(result, expected)
+
 
 if __name__ == "__main__":
     main()
