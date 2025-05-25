@@ -68,13 +68,12 @@ class MouseHandler:
         while not self.__clicking_event.is_set():
             for position in self.__recorded_positions:
                 SetCursorPos(position)
-                self.__click()
+                self.__click(self.__option_handler.get_delay())
 
         self.__start_click_event.clear()
 
-    # TODO: make delay configurable
     @staticmethod
-    def __click(delay: float = 0.1) -> None:
+    def __click(delay: float) -> None:
         """Click the screen where the mouse pointer is and then cause a delay"""
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0)
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0)
