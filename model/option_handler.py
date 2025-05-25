@@ -16,7 +16,7 @@ class OptionHandler:
         __CLEAR_RECORDED_POSITIONS_KEY: "c",
         __START_KEY: "j",
         __STOP_KEY: "k",
-        __DELAY_KEY: 0.1
+        __DELAY_KEY: 0.1,
     }
 
     def __init__(self, options_file_path: str = "data/options.json") -> None:
@@ -27,22 +27,28 @@ class OptionHandler:
             json_handler.write_json(OptionHandler.__DEFAULT_OPTIONS)
 
     def get_toggle_recording_key(self) -> str:
-        return str(self.__options[OptionHandler.__TOGGLE_RECORDING_KEY])
+        return str(self.get_option_value(OptionHandler.__TOGGLE_RECORDING_KEY))
 
     def get_record_mouse_position_key(self) -> str:
-        return str(self.__options[OptionHandler.__RECORD_MOUSE_POSITION_KEY])
+        return str(self.get_option_value(OptionHandler.__RECORD_MOUSE_POSITION_KEY))
 
     def get_clear_recorded_positions_key(self) -> str:
-        return str(self.__options[OptionHandler.__CLEAR_RECORDED_POSITIONS_KEY])
+        return str(self.get_option_value(OptionHandler.__CLEAR_RECORDED_POSITIONS_KEY))
 
     def get_start_key(self) -> str:
-        return str(self.__options[OptionHandler.__START_KEY])
+        return str(self.get_option_value(OptionHandler.__START_KEY))
 
     def get_stop_key(self) -> str:
-        return str(self.__options[OptionHandler.__STOP_KEY])
+        return str(self.get_option_value(OptionHandler.__STOP_KEY))
 
     def get_delay(self) -> float:
-        return float(self.__options[OptionHandler.__DELAY_KEY])
+        return float(self.get_option_value(OptionHandler.__DELAY_KEY))
+
+    def get_option_value(self, option: str) -> str | float:
+        try:
+            return self.__options[option]
+        except KeyError:
+            return OptionHandler.__DEFAULT_OPTIONS[option]
 
     @staticmethod
     def get_default_options() -> dict[str, str | float]:
