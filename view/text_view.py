@@ -1,3 +1,4 @@
+from typing import Mapping
 from model.event_system import EventSystem
 from model.events import Events
 
@@ -13,7 +14,7 @@ class TextView():
     def __handle_program_start(self, toggle_recording_key: str, 
                                record_mouse_click_key: str, clear_positions_key: str, 
                                start_key: str, stop_key: str) -> None:
-        control_keys: dict[str, str] = {
+        control_keys: Mapping[str, str] = {
             "Toggle recording": toggle_recording_key,
             "Record mouse position": record_mouse_click_key,
             "Clear recorded positions": clear_positions_key,

@@ -1,4 +1,4 @@
-from typing import Final
+from typing import Final, Mapping
 from model.json_handler import JSONHandler
 
 
@@ -10,7 +10,7 @@ class OptionHandler:
     __STOP_KEY: Final[str] = "stop"
     __DELAY_KEY: Final[str] = "delay"
 
-    __DEFAULT_OPTIONS: Final[dict[str, str | float]] = {
+    __DEFAULT_OPTIONS: Final[Mapping[str, str | float]] = {
         __TOGGLE_RECORDING_KEY: "r",
         __RECORD_MOUSE_POSITION_KEY: "g",
         __CLEAR_RECORDED_POSITIONS_KEY: "c",
@@ -21,7 +21,7 @@ class OptionHandler:
 
     def __init__(self, options_file_path: str = "data/options.json") -> None:
         json_handler: JSONHandler = JSONHandler(options_file_path)
-        self.__options: dict[str, str | float] = json_handler.read_json()
+        self.__options: Mapping[str, str | float] = json_handler.read_json()
         if len(self.__options) == 0:
             self.__options = OptionHandler.__DEFAULT_OPTIONS
             json_handler.write_json(OptionHandler.__DEFAULT_OPTIONS)
@@ -51,5 +51,5 @@ class OptionHandler:
             return OptionHandler.__DEFAULT_OPTIONS[option]
 
     @staticmethod
-    def get_default_options() -> dict[str, str | float]:
+    def get_default_options() -> Mapping[str, str | float]:
         return OptionHandler.__DEFAULT_OPTIONS

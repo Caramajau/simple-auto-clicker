@@ -1,3 +1,4 @@
+from typing import Mapping
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 from model.option_handler import OptionHandler
@@ -30,7 +31,7 @@ class TestOptionHandler(TestCase):
     @patch("model.option_handler.JSONHandler")
     def test_custom_options_loaded_from_file(self, mock_json_handler: MagicMock) -> None:
         # Mock JSONHandler to return custom options
-        custom_options: dict[str, str | float] = {
+        custom_options: Mapping[str, str | float] = {
             "toggleRecording": "t",
             "recordMousePosition": "m",
             "clearRecordedPosition": "x",
@@ -54,7 +55,7 @@ class TestOptionHandler(TestCase):
     @patch("model.option_handler.JSONHandler")
     def test_partial_options_fallback_to_default(self, mock_json_handler: MagicMock) -> None:
         # Mock JSONHandler to return partial options
-        partial_options : dict[str, str | float] = {
+        partial_options : Mapping[str, str | float] = {
             "toggleRecording": "t",
             "delay": 0.2
         }
