@@ -1,8 +1,8 @@
-from typing import Callable
+from typing import Callable, Final
 from model.events import Events
 
 class EventSystem:
-    __listeners: dict[Events, list[Callable[..., None]]] = {}
+    __listeners: Final[dict[Events, list[Callable[..., None]]]] = {}
     
     @classmethod
     def add_listener(cls, event_type: Events, listener: Callable[..., None]) -> None:
