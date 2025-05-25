@@ -3,20 +3,20 @@ from model.json_handler import JSONHandler
 
 
 class OptionHandler:
-    __TOGGLE_RECORDING_KEY: Final[str] = "toggleRecording"
-    __RECORD_MOUSE_POSITION_KEY: Final[str] = "recordMousePosition"
-    __CLEAR_RECORDED_POSITIONS_KEY: Final[str] = "clearRecordedPosition"
-    __START_KEY: Final[str] = "start"
-    __STOP_KEY: Final[str] = "stop"
-    __DELAY_KEY: Final[str] = "delay"
+    TOGGLE_RECORDING_KEY: Final[str] = "toggleRecording"
+    RECORD_MOUSE_POSITION_KEY: Final[str] = "recordMousePosition"
+    CLEAR_RECORDED_POSITIONS_KEY: Final[str] = "clearRecordedPosition"
+    START_KEY: Final[str] = "start"
+    STOP_KEY: Final[str] = "stop"
+    DELAY_KEY: Final[str] = "delay"
 
     __DEFAULT_OPTIONS: Final[Mapping[str, str | float]] = {
-        __TOGGLE_RECORDING_KEY: "r",
-        __RECORD_MOUSE_POSITION_KEY: "g",
-        __CLEAR_RECORDED_POSITIONS_KEY: "c",
-        __START_KEY: "j",
-        __STOP_KEY: "k",
-        __DELAY_KEY: 0.1,
+        TOGGLE_RECORDING_KEY: "r",
+        RECORD_MOUSE_POSITION_KEY: "g",
+        CLEAR_RECORDED_POSITIONS_KEY: "c",
+        START_KEY: "j",
+        STOP_KEY: "k",
+        DELAY_KEY: 0.1,
     }
 
     def __init__(self, options_file_path: str = "data/options.json") -> None:
@@ -27,22 +27,22 @@ class OptionHandler:
             json_handler.write_json(OptionHandler.__DEFAULT_OPTIONS)
 
     def get_toggle_recording_key(self) -> str:
-        return str(self.get_option_value(OptionHandler.__TOGGLE_RECORDING_KEY))
+        return str(self.get_option_value(OptionHandler.TOGGLE_RECORDING_KEY))
 
     def get_record_mouse_position_key(self) -> str:
-        return str(self.get_option_value(OptionHandler.__RECORD_MOUSE_POSITION_KEY))
+        return str(self.get_option_value(OptionHandler.RECORD_MOUSE_POSITION_KEY))
 
     def get_clear_recorded_positions_key(self) -> str:
-        return str(self.get_option_value(OptionHandler.__CLEAR_RECORDED_POSITIONS_KEY))
+        return str(self.get_option_value(OptionHandler.CLEAR_RECORDED_POSITIONS_KEY))
 
     def get_start_key(self) -> str:
-        return str(self.get_option_value(OptionHandler.__START_KEY))
+        return str(self.get_option_value(OptionHandler.START_KEY))
 
     def get_stop_key(self) -> str:
-        return str(self.get_option_value(OptionHandler.__STOP_KEY))
+        return str(self.get_option_value(OptionHandler.STOP_KEY))
 
     def get_delay(self) -> float:
-        return float(self.get_option_value(OptionHandler.__DELAY_KEY))
+        return float(self.get_option_value(OptionHandler.DELAY_KEY))
 
     def get_option_value(self, option: str) -> str | float:
         try:
