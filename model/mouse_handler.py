@@ -11,7 +11,7 @@ from model.option_handler import OptionHandler
 
 class MouseHandler:
     def __init__(self) -> None:
-        self.__is_recording: bool = False
+        self.__is_recording: bool = True
         self.__recorded_positions: list[tuple[int, int]] = []
         self.__start_click_event: Event = Event()
         self.__clicking_event: Event = Event()

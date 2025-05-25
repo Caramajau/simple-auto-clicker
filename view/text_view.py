@@ -15,7 +15,7 @@ class TextView():
                                record_mouse_click_key: str, clear_positions_key: str, 
                                start_key: str, stop_key: str) -> None:
         control_keys: Mapping[str, str] = {
-            "Toggle recording": toggle_recording_key,
+            "Toggle recording (enabled on start)": toggle_recording_key,
             "Record mouse position": record_mouse_click_key,
             "Clear recorded positions": clear_positions_key,
             "Start clicking recorded positions": start_key,
