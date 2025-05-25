@@ -15,7 +15,7 @@ class TextView():
                                record_mouse_click_key: str, clear_positions_key: str, 
                                start_key: str, stop_key: str) -> None:
         control_keys: Mapping[str, str] = {
-            "Toggle recording": toggle_recording_key,
+            "Toggle recording (enabled on start)": toggle_recording_key,
             "Record mouse position": record_mouse_click_key,
             "Clear recorded positions": clear_positions_key,
             "Start clicking recorded positions": start_key,
@@ -27,8 +27,8 @@ class TextView():
         for info_text, key_name in control_keys.items():
             print(f"{info_text.rjust(max_length)} - {key_name}")
 
-    def __handle_toggle_recording(self) -> None:
-        print("Toggled recording.")
+    def __handle_toggle_recording(self, is_recording: bool) -> None:
+        print("Recording enabled." if is_recording else "Recording disabled.")
 
     def __handle_record_mouse_click(self, position_to_add: tuple[int, int], all_positions: list[tuple[int, int]]) -> None:
         print(f"Added position: {position_to_add}")

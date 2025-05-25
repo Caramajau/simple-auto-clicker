@@ -11,7 +11,7 @@ from model.option_handler import OptionHandler
 
 class MouseHandler:
     def __init__(self) -> None:
-        self.__is_recording: bool = False
+        self.__is_recording: bool = True
         self.__recorded_positions: list[tuple[int, int]] = []
         self.__start_click_event: Event = Event()
         self.__clicking_event: Event = Event()
@@ -47,7 +47,7 @@ class MouseHandler:
     def __toggle_recording(self, _: KeyboardEvent) -> None:
         """Toggle whether mouse clicks are being recorded."""
         self.__is_recording = not self.__is_recording
-        EventSystem.invoke_event(Events.TOGGLE_RECORDING)
+        EventSystem.invoke_event(Events.TOGGLE_RECORDING, self.__is_recording)
 
     def __record_mouse_position(self, _: KeyboardEvent) -> None:
         """Add current mouse position to recorded positions."""
