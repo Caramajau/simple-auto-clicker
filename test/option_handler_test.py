@@ -153,6 +153,30 @@ class TestOptionHandler(TestCase):
             else:
                 self.assertEqual(result, expected)
 
+    @patch("model.option_handler.JSONHandler")
+    def test_ill_formatted_json_fallbacks_to_default(
+        self, mock_json_handler: MagicMock
+    ) -> None:
+        mock_json_handler_instance: MagicMock = mock_json_handler.return_value
+        # Simulate an ill formatted JSON by return an empty dictionary
+        mock_json_handler_instance.read_json.return_value = {}
+        mock_json_handler_instance.write_json = MagicMock()
+
+        # OptionHandler should handle the exception and use default options
+        option_handler = OptionHandler(self.__test_path)
+
+        self.assertEqual(option_handler.get_toggle_recording_key(), "r")
+        self.assertEqual(option_handler.get_record_mouse_position_key(), "g")
+        self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")
+        self.assertEqual(option_handler.get_start_key(), "j")
+        self.assertEqual(option_handler.get_stop_key(), "k")
+        self.assertEqual(option_handler.get_delay(), 0.1)
+
+        # Should write default options to file
+        mock_json_handler_instance.write_json.assert_called_once_with(
+            OptionHandler.get_default_options()
+        )
+
 
 if __name__ == "__main__":
     main()
