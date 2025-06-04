@@ -1,4 +1,6 @@
 from typing import Final, Mapping
+
+from keyboard import parse_hotkey
 from model.json_handler import JSONHandler
 
 
@@ -42,7 +44,7 @@ class OptionHandler:
 
     def get_exit_key(self) -> str:
         return str(self.get_option_value(OptionHandler.EXIT_KEY))
-    
+
     def get_stop_key(self) -> str:
         return str(self.get_option_value(OptionHandler.STOP_KEY))
 
@@ -51,9 +53,26 @@ class OptionHandler:
 
     def get_option_value(self, option: str) -> str | float:
         try:
-            return self.__options[option]
+            selected_value: str | float = self.__options[option]
+            if isinstance(selected_value, float):
+                return selected_value
+
+            selected_key: str = str(selected_value)
+            return (
+                selected_key
+                if self.__is_valid_key(selected_key)
+                else OptionHandler.__DEFAULT_OPTIONS[option]
+            )
         except KeyError:
             return OptionHandler.__DEFAULT_OPTIONS[option]
+
+    @staticmethod
+    def __is_valid_key(key: str) -> bool:
+        try:
+            parse_hotkey(key)
+            return True
+        except ValueError:
+            return False
 
     @staticmethod
     def get_default_options() -> Mapping[str, str | float]:

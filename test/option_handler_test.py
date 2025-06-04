@@ -107,15 +107,24 @@ class TestOptionHandler(TestCase):
             OptionHandler.CLEAR_RECORDED_POSITIONS_KEY: "x",
             OptionHandler.START_KEY: "s",
             OptionHandler.STOP_KEY: "e",
+            OptionHandler.EXIT_KEY: "a",
             OptionHandler.DELAY_KEY: 0.9,
         }
 
+        self.validate_options_override(
+            mock_json_handler, default_options, override_values
+        )
+
+    def validate_options_override(
+        self,
+        mock_json_handler: MagicMock,
+        default_options: Mapping[str, str | float],
+        override_values: Mapping[str, str | float],
+    ) -> None:
         for key, override_value in override_values.items():
             with self.subTest(option=key):
                 # Only override one option at a time
-                partial_options: Mapping[str, str | float] = {key: override_value}
-                mock_json_handler_instance: MagicMock = mock_json_handler.return_value
-                mock_json_handler_instance.read_json.return_value = partial_options
+                self.mock_partial_options(mock_json_handler, key, override_value)
 
                 option_handler = OptionHandler(self.__test_path)
 
@@ -126,6 +135,13 @@ class TestOptionHandler(TestCase):
                 self.validate_default_options(
                     default_options, self.__option_method_names, key, option_handler
                 )
+
+    def mock_partial_options(
+        self, mock_json_handler: MagicMock, key: str, override_value: str | float
+    ) -> None:
+        partial_options: Mapping[str, str | float] = {key: override_value}
+        mock_json_handler_instance: MagicMock = mock_json_handler.return_value
+        mock_json_handler_instance.read_json.return_value = partial_options
 
     def validate_option_override(
         self,
@@ -150,13 +166,23 @@ class TestOptionHandler(TestCase):
         for other_key, method in option_method_names.items():
             if other_key == key:
                 continue
-            expected: str | float = default_options[other_key]
-            result = getattr(option_handler, method)()
-            # Ensure type matches for delay
-            if other_key == OptionHandler.DELAY_KEY:
-                self.assertEqual(result, float(expected))
-            else:
-                self.assertEqual(result, expected)
+            self.assert_default_option(
+                default_options[other_key], option_handler, other_key, method
+            )
+
+    def assert_default_option(
+        self,
+        expected: str | float,
+        option_handler: OptionHandler,
+        other_key: str,
+        method: str,
+    ) -> None:
+        result = getattr(option_handler, method)()
+        # Ensure type matches for delay
+        if other_key == OptionHandler.DELAY_KEY:
+            self.assertEqual(result, float(expected))
+        else:
+            self.assertEqual(result, expected)
 
     @patch("model.option_handler.JSONHandler")
     def test_ill_formatted_json_fallbacks_to_default(
@@ -182,6 +208,33 @@ class TestOptionHandler(TestCase):
         mock_json_handler_instance.write_json.assert_called_once_with(
             OptionHandler.get_default_options()
         )
+
+    @patch("model.option_handler.JSONHandler")
+    def test_single_option_invalid_keys_entered_fallback_to_default(
+        self, mock_json_handler: MagicMock
+    ) -> None:
+        default_options: Mapping[str, str | float] = OptionHandler.get_default_options()
+
+        override_values: Mapping[str, str | float] = {
+            OptionHandler.TOGGLE_RECORDING_KEY: "ze",
+            OptionHandler.RECORD_MOUSE_POSITION_KEY: "me",
+            OptionHandler.CLEAR_RECORDED_POSITIONS_KEY: "xe",
+            OptionHandler.START_KEY: "se",
+            OptionHandler.STOP_KEY: "ee",
+            OptionHandler.EXIT_KEY: "ae",
+        }
+
+        for key, override_value in override_values.items():
+            with self.subTest(option=key):
+                # Only check one option at a time
+                self.mock_partial_options(mock_json_handler, key, override_value)
+
+                option_handler = OptionHandler(self.__test_path)
+
+                for other_key, method in self.__option_method_names.items():
+                    self.assert_default_option(
+                        default_options[other_key], option_handler, other_key, method
+                    )
 
 
 if __name__ == "__main__":
