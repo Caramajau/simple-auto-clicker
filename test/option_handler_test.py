@@ -222,6 +222,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.START_KEY: "se",
             OptionHandler.STOP_KEY: "ee",
             OptionHandler.EXIT_KEY: "ae",
+            OptionHandler.DELAY_KEY: "0.1e"
         }
 
         for key, override_value in override_values.items():
