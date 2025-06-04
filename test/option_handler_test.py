@@ -13,6 +13,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.CLEAR_RECORDED_POSITIONS_KEY: OptionHandler.get_clear_recorded_positions_key.__name__,
             OptionHandler.START_KEY: OptionHandler.get_start_key.__name__,
             OptionHandler.STOP_KEY: OptionHandler.get_stop_key.__name__,
+            OptionHandler.EXIT_KEY: OptionHandler.get_exit_key.__name__,
             OptionHandler.DELAY_KEY: OptionHandler.get_delay.__name__,
         }
 
@@ -33,6 +34,7 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")
         self.assertEqual(option_handler.get_start_key(), "j")
         self.assertEqual(option_handler.get_stop_key(), "k")
+        self.assertEqual(option_handler.get_exit_key(), "esc")
         self.assertEqual(option_handler.get_delay(), 0.1)
 
         # Assert that default options are written to the file
@@ -51,6 +53,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.CLEAR_RECORDED_POSITIONS_KEY: "x",
             OptionHandler.START_KEY: "s",
             OptionHandler.STOP_KEY: "e",
+            OptionHandler.EXIT_KEY: "esc",
             OptionHandler.DELAY_KEY: 0.5,
         }
         mock_json_handler_instance: MagicMock = mock_json_handler.return_value
@@ -64,6 +67,7 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_clear_recorded_positions_key(), "x")
         self.assertEqual(option_handler.get_start_key(), "s")
         self.assertEqual(option_handler.get_stop_key(), "e")
+        self.assertEqual(option_handler.get_exit_key(), "esc")
         self.assertEqual(option_handler.get_delay(), 0.5)
 
     @patch("model.option_handler.JSONHandler")
@@ -89,6 +93,7 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")
         self.assertEqual(option_handler.get_start_key(), "j")
         self.assertEqual(option_handler.get_stop_key(), "k")
+        self.assertEqual(option_handler.get_exit_key(), "esc")
 
     @patch("model.option_handler.JSONHandler")
     def test_single_option_override_fallback_to_default(
@@ -158,7 +163,7 @@ class TestOptionHandler(TestCase):
         self, mock_json_handler: MagicMock
     ) -> None:
         mock_json_handler_instance: MagicMock = mock_json_handler.return_value
-        # Simulate an ill formatted JSON by return an empty dictionary
+        # Simulate an ill-formatted JSON by return an empty dictionary
         mock_json_handler_instance.read_json.return_value = {}
         mock_json_handler_instance.write_json = MagicMock()
 
@@ -170,6 +175,7 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_clear_recorded_positions_key(), "c")
         self.assertEqual(option_handler.get_start_key(), "j")
         self.assertEqual(option_handler.get_stop_key(), "k")
+        self.assertEqual(option_handler.get_exit_key(), "esc")
         self.assertEqual(option_handler.get_delay(), 0.1)
 
         # Should write default options to file

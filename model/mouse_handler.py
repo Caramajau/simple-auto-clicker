@@ -40,9 +40,10 @@ class MouseHandler:
             self.__option_handler.get_clear_recorded_positions_key(),
             self.__option_handler.get_start_key(),
             self.__option_handler.get_stop_key(),
+            self.__option_handler.get_exit_key()
         )
 
-        wait("esc")
+        wait(self.__option_handler.get_exit_key())
 
     def __toggle_recording(self, _: KeyboardEvent) -> None:
         """Toggle whether mouse clicks are being recorded."""

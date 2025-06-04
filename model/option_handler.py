@@ -9,6 +9,7 @@ class OptionHandler:
     START_KEY: Final[str] = "start"
     STOP_KEY: Final[str] = "stop"
     DELAY_KEY: Final[str] = "delay"
+    EXIT_KEY: Final[str] = "exit"
 
     __DEFAULT_OPTIONS: Final[Mapping[str, str | float]] = {
         TOGGLE_RECORDING_KEY: "r",
@@ -16,6 +17,7 @@ class OptionHandler:
         CLEAR_RECORDED_POSITIONS_KEY: "c",
         START_KEY: "j",
         STOP_KEY: "k",
+        EXIT_KEY: "esc",
         DELAY_KEY: 0.1,
     }
 
@@ -38,6 +40,9 @@ class OptionHandler:
     def get_start_key(self) -> str:
         return str(self.get_option_value(OptionHandler.START_KEY))
 
+    def get_exit_key(self) -> str:
+        return str(self.get_option_value(OptionHandler.EXIT_KEY))
+    
     def get_stop_key(self) -> str:
         return str(self.get_option_value(OptionHandler.STOP_KEY))
 

@@ -29,6 +29,7 @@ class TextView:
         clear_positions_key: str,
         start_key: str,
         stop_key: str,
+        exit_key: str,
     ) -> None:
         control_keys: Mapping[str, str] = {
             "Toggle recording (enabled on start)": toggle_recording_key,
@@ -42,7 +43,7 @@ class TextView:
         print("The controls are:")
         for info_text, key_name in control_keys.items():
             print(f"{info_text.rjust(max_length)} - {key_name}")
-        print("To exit the application press ESC or close the console window.")
+        print(f"To exit the application press {exit_key} or close the console window.")
 
     def __handle_toggle_recording(self, is_recording: bool) -> None:
         print("Recording enabled." if is_recording else "Recording disabled.")
