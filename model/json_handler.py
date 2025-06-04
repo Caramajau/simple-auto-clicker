@@ -24,6 +24,7 @@ class JSONHandler:
         try:
             directory: str = path.dirname(self.__file_path)
             if not path.exists(directory):
+                print(f"Creating file at {self.__file_path} \n")
                 makedirs(directory)
 
             with open(self.__file_path, "w", encoding="utf-8") as file:
