@@ -3,11 +3,11 @@ from os import path, makedirs
 from typing import Mapping
 
 
-class JSONHandler:
+class JSONHandler[T]:
     def __init__(self, file_path: str) -> None:
         self.__file_path: str = file_path
 
-    def read_json(self) -> Mapping[str, str | float]:
+    def read_json(self) -> Mapping[str, T]:
         """Read JSON data from the file."""
         if not path.exists(self.__file_path):
             print(f"File not found at path {self.__file_path}")
@@ -19,7 +19,7 @@ class JSONHandler:
             print(f"JSON decoding error occurred: {e}")
             return {}
 
-    def write_json(self, data: Mapping[str, str | float]) -> None:
+    def write_json(self, data: Mapping[str, T]) -> None:
         """Write JSON data to the file, creating the file if it does not exist."""
         try:
             directory: str = path.dirname(self.__file_path)

@@ -24,7 +24,7 @@ class OptionHandler:
     }
 
     def __init__(self, options_file_path: str = "data/options.json") -> None:
-        json_handler: JSONHandler = JSONHandler(options_file_path)
+        json_handler: JSONHandler[str | float] = JSONHandler(options_file_path)
         self.__options: Mapping[str, str | float] = json_handler.read_json()
         if len(self.__options) == 0:
             self.__options = OptionHandler.__DEFAULT_OPTIONS
