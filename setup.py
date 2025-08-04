@@ -1,4 +1,4 @@
-from cx_Freeze import setup, Executable  # type: ignore
+from cx_Freeze import Executable, setup  # type: ignore
 
 setup(
     name="Simple Auto Clicker",
