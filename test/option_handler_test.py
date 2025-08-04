@@ -1,10 +1,14 @@
-from typing import Mapping
+from collections.abc import Mapping
+from typing import Final
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
+
 from model.option_handler import OptionHandler
 
 
 class TestOptionHandler(TestCase):
+    json_handler_patch_path: Final[str] = "model.option_handler.JSONHandler"
+
     def setUp(self) -> None:
         self.__test_path: str = "mock/path/options.json"
         self.__option_method_names: Mapping[str, str] = {
@@ -17,7 +21,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.DELAY_KEY: OptionHandler.get_delay.__name__,
         }
 
-    @patch("model.option_handler.JSONHandler", autospec=True)
+    @patch(json_handler_patch_path, autospec=True)
     def test_default_options_loaded_when_file_is_empty(
         self, mock_json_handler: MagicMock
     ) -> None:
@@ -42,7 +46,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.get_default_options()
         )
 
-    @patch("model.option_handler.JSONHandler")
+    @patch(json_handler_patch_path)
     def test_custom_options_loaded_from_file(
         self, mock_json_handler: MagicMock
     ) -> None:
@@ -70,7 +74,7 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_exit_key(), "esc")
         self.assertEqual(option_handler.get_delay(), 0.5)
 
-    @patch("model.option_handler.JSONHandler")
+    @patch(json_handler_patch_path)
     def test_partial_options_fallback_to_default(
         self, mock_json_handler: MagicMock
     ) -> None:
@@ -95,7 +99,7 @@ class TestOptionHandler(TestCase):
         self.assertEqual(option_handler.get_stop_key(), "k")
         self.assertEqual(option_handler.get_exit_key(), "esc")
 
-    @patch("model.option_handler.JSONHandler")
+    @patch(json_handler_patch_path)
     def test_single_option_override_fallback_to_default(
         self, mock_json_handler: MagicMock
     ) -> None:
@@ -184,7 +188,7 @@ class TestOptionHandler(TestCase):
         else:
             self.assertEqual(result, expected)
 
-    @patch("model.option_handler.JSONHandler")
+    @patch(json_handler_patch_path)
     def test_ill_formatted_json_fallbacks_to_default(
         self, mock_json_handler: MagicMock
     ) -> None:
@@ -209,7 +213,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.get_default_options()
         )
 
-    @patch("model.option_handler.JSONHandler")
+    @patch(json_handler_patch_path)
     def test_single_option_invalid_keys_entered_fallback_to_default(
         self, mock_json_handler: MagicMock
     ) -> None:
@@ -222,7 +226,7 @@ class TestOptionHandler(TestCase):
             OptionHandler.START_KEY: "se",
             OptionHandler.STOP_KEY: "ee",
             OptionHandler.EXIT_KEY: "ae",
-            OptionHandler.DELAY_KEY: "0.1e"
+            OptionHandler.DELAY_KEY: "0.1e",
         }
 
         for key, override_value in override_values.items():

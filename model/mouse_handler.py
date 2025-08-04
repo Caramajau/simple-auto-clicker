@@ -1,11 +1,12 @@
-from win32api import GetCursorPos, SetCursorPos, mouse_event  # type: ignore
-from win32con import MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP
-from keyboard import on_press_key, wait, KeyboardEvent
-from threading import Thread, Event
-from model.event_system import EventSystem
-from model.events import Events
+from threading import Event, Thread
 from time import sleep
 
+from keyboard import KeyboardEvent, on_press_key, wait
+from win32api import GetCursorPos, SetCursorPos, mouse_event  # type: ignore
+from win32con import MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP
+
+from model.event_system import EventSystem
+from model.events import Events
 from model.option_handler import OptionHandler
 
 
@@ -40,7 +41,7 @@ class MouseHandler:
             self.__option_handler.get_clear_recorded_positions_key(),
             self.__option_handler.get_start_key(),
             self.__option_handler.get_stop_key(),
-            self.__option_handler.get_exit_key()
+            self.__option_handler.get_exit_key(),
         )
 
         wait(self.__option_handler.get_exit_key())

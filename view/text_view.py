@@ -1,4 +1,5 @@
-from typing import Mapping
+from collections.abc import Mapping
+
 from model.event_system import EventSystem
 from model.events import Events
 

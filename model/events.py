@@ -1,4 +1,4 @@
-from enum import Enum, unique, auto
+from enum import Enum, auto, unique
 
 
 # Events and not Event to not conflict with threading's Event.

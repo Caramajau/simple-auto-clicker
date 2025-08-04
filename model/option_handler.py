@@ -1,7 +1,8 @@
-from typing import Final, Mapping
+from collections.abc import Mapping
+from typing import Final
 
+from json_handler_caramajau.json_handler import JSONHandler
 from keyboard import parse_hotkey
-from model.json_handler import JSONHandler
 
 
 class OptionHandler:
