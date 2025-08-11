@@ -36,4 +36,4 @@ Where:
 ### Additional Notes
 - The auto clicker is designed for personal use and should not be used for any malicious activities.
 - Always ensure that you are in compliance with the terms of service of the applications you are using the auto clicker with.
-- If you have any suggestions or feature requests, feel free to open an issue on the [GitHub repository](https://github.com/Caramajau/simple-auto-clicker/issues).
+- If you have any suggestions or feature requests, feel free to open an issue on the [Issues](https://github.com/Caramajau/simple-auto-clicker/issues) page.
